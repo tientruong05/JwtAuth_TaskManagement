@@ -6,16 +6,23 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository interface for {@link Task} entities.
+ *
+ * This interface provides CRUD (Create, Read, Update, Delete) operations for Task objects
+ * by extending JpaRepository. It also includes custom query methods for task-specific
+ * data retrieval.
+ */
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     /**
-     * Tìm tất cả các công việc thuộc về một người dùng cụ thể,
-     * sắp xếp theo thời gian tạo gần nhất lên đầu.
-     * Spring Data JPA sẽ tự động tạo query dựa trên tên phương thức.
+     * Finds all tasks assigned to a specific user, ordered by creation date in descending order.
      *
-     * @param userId ID của người dùng cần tìm công việc.
-     * @return Danh sách các công việc của người dùng đó.
+     * Spring Data JPA automatically generates the query from this method's name.
+     *
+     * @param userId The ID of the user whose tasks are to be retrieved.
+     * @return A list of tasks for the specified user, sorted from newest to oldest.
      */
-    List<Task> findByUserIdOrderByCreatedAtDesc(Long UserId);
+    List<Task> findByUserIdOrderByCreatedAtDesc(Long userId);
 }

@@ -6,33 +6,49 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository interface for {@link User} entities.
+ *
+ * This interface provides methods to access and manage user data,
+ * including basic CRUD operations through JpaRepository and custom query methods
+ * to find and check for the existence of users. It plays a central role
+ * in authentication and user management.
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
-     * Tìm một người dùng dựa trên tên đăng nhập.
-     * Dùng Optional để xử lý trường hợp không tìm thấy người dùng một cách an toàn.
-     * Đây là phương thức cốt lõi cho Spring Security.
+     * Finds a user by their username.
      *
-     * @param username Tên đăng nhập cần tìm.
-     * @return một Optional chứa User nếu tìm thấy, ngược lại là Optional rỗng.
+     * This method is crucial for Spring Security to load user details
+     * during the authentication process. It returns an {@link Optional} to safely
+     * handle cases where the user is not found.
+     *
+     * @param username The username of the user to find.
+     * @return An {@link Optional} containing the {@link User} entity if found,
+     *         or an empty Optional otherwise.
      */
     Optional<User> findByUsername(String username);
 
     /**
-     * Kiểm tra xem một tên đăng nhập đã tồn tại trong DB hay chưa.
-     * Hiệu quả hơn việc dùng findByUsername rồi kiểm tra null.
+     * Checks if a user exists with the given username.
      *
-     * @param username Tên đăng nhập cần kiểm tra.
-     * @return true nếu tồn tại, false nếu không.
+     * This method is more efficient than fetching the entire entity just to check for existence,
+     * and is typically used during registration to validate username uniqueness.
+     *
+     * @param username The username to check.
+     * @return {@code true} if the username already exists, {@code false} otherwise.
      */
     Boolean existsByUsername(String username);
 
     /**
-     * Kiểm tra xem một email đã tồn tại trong DB hay chưa.
+     * Checks if a user exists with the given email address.
      *
-     * @param email Email cần kiểm tra.
-     * @return true nếu tồn tại, false nếu không.
+     * Similar to {@code existsByUsername}, this method is used to validate
+     * email uniqueness during the registration process.
+     *
+     * @param email The email address to check.
+     * @return {@code true} if the email already exists, {@code false} otherwise.
      */
     Boolean existsByEmail(String email);
 }
